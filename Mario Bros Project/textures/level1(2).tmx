@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="240" height="13" tilewidth="16" tileheight="16" nextobjectid="1">
+ <tileset firstgid="1" name="52571" tilewidth="16" tileheight="16" tilecount="924" columns="33">
+  <image source="52571.png" width="528" height="448"/>
+ </tileset>
+ <layer name="background" width="240" height="13">
+  <data encoding="base64" compression="zlib">
+   eJzt1k0OgjAUReGHM13GHer+B66NiRhDYog/BWpva8/gmxCSFl5PYDxEjIgr0CB3N7VwzwHYwt1NTdyzANZyN1ML9xyQj+LBvY8S3N3Uwj0H5KGg3x6554D9FPTbK/ccsI+CfnvmngO204t2Rb/JjkPEaSi7Jv3iTm/aVcf9zj2mnv3zdO+FflGYPrSrjvpdXpt7/EW/qd9yGsbS83+evrQr+rV8f9euvbU7+m3PfDaU0K466Xd6Hc1pee85nx//eb7XuAGd1/xS
+  </data>
+ </layer>
+ <layer name="graphics" width="240" height="13">
+  <data encoding="base64" compression="zlib">
+   eJztmEtOwzAQhp3sgAICVt1GrIAWifCQWACH4GrACbgCj9sxVm3VMjOO43caf9KobhtPZjz+PWkZq1Ti8tYy9g720eaOZL7IGtQ62OO6Zru2378gj2+wn4LywWqzbPLG5ILt/pI1CFkH133qq4tU55Drmo3d7ynySn1+x74fVpvHCeo3tCbH4Hou++oiZ84xSJFXjPO7pPtxbPTr0nPqs2v5LB3ntYph/Lab75bCWvFZJTw2+nXpOTnOojkwpJ3KvKD0e978t0qlUhap9DvV/ydrr6uUDKXfhWIhNFzi//FTQf6WtFk603mj/94dei/9YWMbbM++jhj70CF+Q/iWOdnWIzSnmgYx/XKdHsLrEdgxi/8MvQd+9zM/n+vrMtcYJKliCaEzPdaO0X4x3yWtu4kTiLMHO1PiVfX7Ksa8564UU3swhm/+FzD/MuMaYusyxxhSxzJWZxh6rB0b9tsR80voIxQyzl7LV+qXf/8sPud9l9uabceUfn1qfQBzFrzXR9TvHfi9F/ZAxH8jcrg15KH6oXxh1w9d5xKD7b2pa0252MQy5N8GXU/SH6UzDD1Wfa5Jvx0yn+ojY2oZAzXOXquNzONJ6PdF0e81245l/J/txnS/pn1HcQXXr8DWmftvJT5NJst9f5+Yd5U/SzNvaw==
+  </data>
+ </layer>
+ <objectgroup name="ground"/>
+ <objectgroup name="pipes"/>
+ <objectgroup name="coins"/>
+ <objectgroup name="bricks"/>
+</map>
