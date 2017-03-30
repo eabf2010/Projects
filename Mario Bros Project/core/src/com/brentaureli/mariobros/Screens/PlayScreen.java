@@ -22,10 +22,12 @@ import com.brentaureli.mariobros.Sprites.Enemy;
 import com.brentaureli.mariobros.Sprites.Mario;
 import com.brentaureli.mariobros.Tools.B2WorldCreator;
 import com.brentaureli.mariobros.Tools.WorldContactListener;
+import com.brentaureli.mariobros.items.Flower;
 import com.brentaureli.mariobros.items.Item;
 import com.brentaureli.mariobros.items.ItemDef;
+import com.brentaureli.mariobros.items.Life;
 import com.brentaureli.mariobros.items.Mushroom;
-
+import com.brentaureli.mariobros.items.Star;
 import java.util.concurrent.LinkedBlockingQueue;
 
 
@@ -37,7 +39,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class PlayScreen implements Screen{
     private MarioBros game;
     private TextureAtlas atlas;
-
 
     private OrthographicCamera gamecam;
     private Viewport gamePort;
@@ -59,6 +60,8 @@ public class PlayScreen implements Screen{
     //music
     private Music music;
 
+    private boolean marioIsRuning;
+
     private Array<Item> items;
     private LinkedBlockingQueue<ItemDef> itemsToSpawn;
 
@@ -70,6 +73,8 @@ public class PlayScreen implements Screen{
         gamePort = new FitViewport(MarioBros.V_WIDTH / MarioBros.PPM, MarioBros.V_HEIGHT / MarioBros.PPM, gamecam);
 
         hud = new Hud(game.batch);
+
+        marioIsRuning = false;
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("level1.tmx");
@@ -88,6 +93,7 @@ public class PlayScreen implements Screen{
 
         music = MarioBros.manager.get("audio/music/mario_music.ogg", Music.class);
         music.setLooping(true);
+        music.setVolume(0.5f);
         //music.play();
 
         items = new Array<Item>();
@@ -103,12 +109,21 @@ public class PlayScreen implements Screen{
     public void handleSpawningItems(){
         if(!itemsToSpawn.isEmpty()){
             ItemDef idef = itemsToSpawn.poll();
+
             if(idef.type == Mushroom.class){
                 items.add(new Mushroom(this, idef.position.x, idef.position.y));
             }
+            if(idef.type == Flower.class){
+                items.add(new Flower(this, idef.position.x, idef.position.y));
+            }
+            if(idef.type == Star.class){
+                items.add(new Star(this, idef.position.x, idef.position.y));
+            }
+            if(idef.type == Life.class){
+                items.add(new Life(this, idef.position.x, idef.position.y));
+            }
         }
     }
-
 
     //methods
     public TextureAtlas getAtlas(){
@@ -117,33 +132,96 @@ public class PlayScreen implements Screen{
 
     @Override
     public void show() {
-
     }
 
     public void handleInput(float dt){
         /*if(Gdx.input.justTouched())
             player.b2body.applyLinearImpulse(0, 4f, 0, 0, true);*/
+     /*if(player.currentState != Mario.State.DEAD) {
+         if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+             player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
+         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+             player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+             player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+     }*/
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
-            player.b2body.applyLinearImpulse(new Vector2(0, 4f), player.b2body.getWorldCenter(), true);
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
-            player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
-            player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+        if(player.currentState != Mario.State.DEAD) {
+            if (Gdx.input.isKeyJustPressed(Input.Keys.UP))
+                player.jump();
+            /*if (Gdx.input.isKeyJustPressed(Input.Keys.A))
+                player.jump();*/
+            if (Gdx.input.isKeyPressed(Input.Keys.DOWN))
+                if (player.isBig() || player.isFire())
+                    player.flexed();
 
+            if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)){
+                if (player.isFire())
+                    player.fire();
+            }
+
+            if(Gdx.input.isKeyPressed(Input.Keys.S)){
+                marioIsRuning = true;
+                player.isRunning();
+            }
+            else {
+                marioIsRuning = false;
+                player.isNotRunning();
+            }
+
+            if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+                if (marioIsRuning && player.b2body.getLinearVelocity().x <= 4)
+                    player.b2body.applyLinearImpulse(new Vector2(0.24f, 0), player.b2body.getWorldCenter(), true);
+                else if(player.b2body.getLinearVelocity().x <= 2)
+                    player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+
+            if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+
+                if (marioIsRuning && player.b2body.getLinearVelocity().x >= -4)
+                    player.b2body.applyLinearImpulse(new Vector2(-0.24f, 0), player.b2body.getWorldCenter(), true);
+                else if(player.b2body.getLinearVelocity().x >= -2)
+                    player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            }
+            /*if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2)
+                player.b2body.applyLinearImpulse(new Vector2(-0.1f, 0), player.b2body.getWorldCenter(), true);
+            else if (Gdx.input.isKeyPressed(Input.Keys.LEFT) && player.b2body.getLinearVelocity().x >= -2 && Gdx.input.isKeyPressed(Input.Keys.S))
+                player.b2body.applyLinearImpulse(new Vector2(-1.8f, 0), player.b2body.getWorldCenter(), true);
+            if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2 && Gdx.input.isKeyPressed(Input.Keys.S))
+                player.b2body.applyLinearImpulse(new Vector2(1.8f, 0), player.b2body.getWorldCenter(), true);
+            else if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && player.b2body.getLinearVelocity().x <= 2)
+                player.b2body.applyLinearImpulse(new Vector2(0.1f, 0), player.b2body.getWorldCenter(), true);*/
+
+        }
     }
+
+    /*public void checkGameOver()
+    {
+        if(player.currentState == Mario.State.DEAD && player.getStateTimer()
+                > 3)
+        {
+            dispose();
+            game.setScreen(new GameOverScreen(game));
+        }
+    }*/
 
     public void update(float dt) {
         handleInput(dt);
         handleSpawningItems();
 
-        world.step(1 / 60f, 6, 2);
+        world.step(1 / 62f, 6, 2);
 
         player.update(dt);
         //goomba.update(dt);
-        for (Enemy enemy : creator.getGoombas()){
+        /*for (Enemy enemy : creator.getGoombas()){
             enemy.update(dt);
             if (enemy.getX() < player.getX() + 224 / MarioBros.PPM)
+                enemy.b2body.setActive(true);
+        }*/
+
+        for (Enemy enemy : creator.getEnemies()){
+            enemy.update(dt);
+            if (enemy.getX() < player.getX() + 230 / MarioBros.PPM)
                 enemy.b2body.setActive(true);
         }
 
@@ -152,7 +230,9 @@ public class PlayScreen implements Screen{
 
         hud.update(dt);
 
-        gamecam.position.x = player.b2body.getPosition().x;
+        //esto es para mover la camara solo cuando mario no este muerto
+        if(player.currentState != Mario.State.DEAD)
+            gamecam.position.x = player.b2body.getPosition().x;
 
         gamecam.update();
 
@@ -177,7 +257,10 @@ public class PlayScreen implements Screen{
         game.batch.begin();
         player.draw(game.batch);
         //goomba.draw(game.batch);
-        for(Enemy enemy : creator.getGoombas())
+        //for(Enemy enemy : creator.getGoombas())
+            //enemy.draw(game.batch);
+
+        for(Enemy enemy : creator.getEnemies())
             enemy.draw(game.batch);
 
         for (Item item : items)
@@ -187,6 +270,20 @@ public class PlayScreen implements Screen{
 
         game.batch.setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        if(gameOver())
+        {
+            game.setScreen(new GameOverSrcreen(game));
+            dispose();
+        }
+    }
+
+    public boolean gameOver()
+    {
+        if(player.currentState == Mario.State.DEAD && player.getStateTimer() > 3)
+            return true;
+        else
+            return false;
     }
 
     @Override
@@ -215,6 +312,11 @@ public class PlayScreen implements Screen{
 
     @Override
     public void hide() {
+
+    }
+
+    @Override
+    public void dispose() {
         map.dispose();
         renderer.dispose();
         world.dispose();
@@ -223,13 +325,10 @@ public class PlayScreen implements Screen{
 
     }
 
-    @Override
-    public void dispose() {
-
-    }
-
     public void setPlayer(Mario player)
     {
         this.player = player;
     }
+
+    public Hud getHud(){ return hud; }
 }

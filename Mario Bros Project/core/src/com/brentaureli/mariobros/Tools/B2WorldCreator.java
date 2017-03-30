@@ -14,13 +14,18 @@ import com.brentaureli.mariobros.MarioBros;
 import com.brentaureli.mariobros.Screens.PlayScreen;
 import com.brentaureli.mariobros.Sprites.Brick;
 import com.brentaureli.mariobros.Sprites.Coin;
+import com.brentaureli.mariobros.Sprites.Enemy;
 import com.brentaureli.mariobros.Sprites.Goomba;
+import com.brentaureli.mariobros.Sprites.SecretCoin;
+import com.brentaureli.mariobros.Sprites.Turtle;
 
 /**
  * Created by Alexander on 09/01/2017.
  */
 public class B2WorldCreator {
     private Array<Goomba> goombas;
+    private Array<Turtle> turtles;
+    //private Array<Coquito> coquitos;
     //constructor
     public B2WorldCreator(PlayScreen screen){
         World world = screen.getWorld();
@@ -67,6 +72,11 @@ public class B2WorldCreator {
             //new Coin(screen, rect);
         }
 
+        for(MapObject object : map.getLayers().get(8).getObjects().getByType(RectangleMapObject.class)){
+
+            new SecretCoin(screen, object);
+        }
+
         //para crear los ladrillos en cuadros
         for(MapObject object : map.getLayers().get(5).getObjects().getByType(RectangleMapObject.class)){
             //Rectangle rect = ((RectangleMapObject) object).getRectangle();
@@ -80,9 +90,32 @@ public class B2WorldCreator {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             goombas.add(new Goomba(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
         }
+
+        //crear las totugas
+        turtles = new Array<Turtle>();
+        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
+        }
+
+        //crear los cocos
+        /*coquitos = new Array<Coquito>();
+        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            coquitos.add(new Coquito(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
+        }*/
     }
 
     public Array<Goomba> getGoombas() {
         return goombas;
     }
+
+    public Array<Enemy> getEnemies(){
+        Array<Enemy> enemies = new Array<Enemy>();
+        enemies.addAll(goombas);
+        enemies.addAll(turtles);
+        //enemies.addAll(coquitos);
+        return enemies;
+    }
+
 }

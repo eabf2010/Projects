@@ -5,42 +5,126 @@ filter: Nearest,Nearest
 repeat: none
 big_mario
   rotate: false
-  xy: 1, 29
+  xy: 1, 79
+  size: 336, 32
+  orig: 336, 32
+  offset: 0, 0
+  index: -1
+fire_Mario
+  rotate: false
+  xy: 1, 45
+  size: 336, 32
+  orig: 336, 32
+  offset: 0, 0
+  index: -1
+somes_Big_Mario_Shine
+  rotate: false
+  xy: 339, 79
   size: 336, 32
   orig: 336, 32
   offset: 0, 0
   index: -1
 little_mario
   rotate: false
-  xy: 1, 11
+  xy: 1, 27
   size: 224, 16
   orig: 224, 16
   offset: 0, 0
   index: -1
+somes_Little_Shine_Mario
+  rotate: false
+  xy: 339, 61
+  size: 224, 16
+  orig: 224, 16
+  offset: 0, 0
+  index: -1
+big_Mario_Shine_Grow
+  rotate: false
+  xy: 677, 79
+  size: 96, 32
+  orig: 96, 32
+  offset: 0, 0
+  index: -1
 turtle
   rotate: false
-  xy: 339, 37
+  xy: 1, 1
   size: 96, 24
   orig: 96, 24
   offset: 0, 0
   index: -1
-goomba
+big_Mario_Before_Fire
   rotate: false
-  xy: 227, 11
+  xy: 775, 79
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+big_Mario_Shine_Jump
+  rotate: false
+  xy: 825, 79
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+big_Mario_Shine_Run
+  rotate: false
+  xy: 875, 79
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+big_Mario_Shine_Stand
+  rotate: false
+  xy: 925, 79
+  size: 48, 32
+  orig: 48, 32
+  offset: 0, 0
+  index: -1
+coquitos
+  rotate: false
+  xy: 975, 95
   size: 48, 16
   orig: 48, 16
   offset: 0, 0
   index: -1
+flower
+  rotate: false
+  xy: 227, 27
+  size: 64, 16
+  orig: 64, 16
+  offset: 0, 0
+  index: -1
+goomba
+  rotate: false
+  xy: 975, 77
+  size: 48, 16
+  orig: 48, 16
+  offset: 0, 0
+  index: -1
+star
+  rotate: false
+  xy: 99, 9
+  size: 62, 16
+  orig: 62, 16
+  offset: 0, 0
+  index: -1
 fireball
   rotate: false
-  xy: 1, 1
+  xy: 339, 51
   size: 32, 8
   orig: 32, 8
   offset: 0, 0
   index: -1
 mushroom
   rotate: false
-  xy: 437, 45
+  xy: 293, 27
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
+mushroom_life
+  rotate: false
+  xy: 565, 61
   size: 16, 16
   orig: 16, 16
   offset: 0, 0

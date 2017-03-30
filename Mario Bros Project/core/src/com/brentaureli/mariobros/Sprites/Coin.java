@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.brentaureli.mariobros.MarioBros;
 import com.brentaureli.mariobros.Scenes.Hud;
 import com.brentaureli.mariobros.Screens.PlayScreen;
+import com.brentaureli.mariobros.items.Flower;
 import com.brentaureli.mariobros.items.ItemDef;
 import com.brentaureli.mariobros.items.Mushroom;
 
@@ -24,26 +25,38 @@ public class Coin extends InteractiveTileObject {
         super(screen, object);
         tileSet = map.getTileSets().getTileSet("52571");
         fixture.setUserData(this);
-        //constructor
         setCategoryFilter(MarioBros.COIN_BIT);
     }
 
     @Override
-    public void onHeadHit() {
-        Gdx.app.log("Coin", "Collision");
+    public void onHeadHit(Mario mario) {
+        //Gdx.app.log("Coin", "Collision");
         if(getCell().getTile().getId() == BLANK_COIN) {
             MarioBros.manager.get("audio/sounds/bump.wav", Sound.class).play();
             Hud.addScore(0);
         }
         else {
-            if(object.getProperties().containsKey("mushroom")){
-            screen.spawItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBros.PPM),
-                    Mushroom.class));
+            if (mario.isBig() || mario.isFire()) {
+                if(object.getProperties().containsKey("flower")){
+                    Gdx.app.log("aqui", "la flor");
+                    screen.spawItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBros.PPM),
+                            Flower.class));
                     MarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
+                }
+                else
+                    MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
             }
-            else
-               MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
-        }
+            else{
+                if(object.getProperties().containsKey("mushroom")) {
+                    Gdx.app.log("aqui", "el hongo");
+                    screen.spawItem(new ItemDef(new Vector2(body.getPosition().x, body.getPosition().y + 16 / MarioBros.PPM),
+                            Mushroom.class));
+                    MarioBros.manager.get("audio/sounds/powerup_spawn.wav", Sound.class).play();
+                }
+                else
+                    MarioBros.manager.get("audio/sounds/coin.wav", Sound.class).play();
+            }
+       }
         getCell().setTile(tileSet.getTile(BLANK_COIN));
         Hud.addScore(100);
     }
